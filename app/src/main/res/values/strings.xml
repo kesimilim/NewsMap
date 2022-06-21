@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">News Map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <integer name="com_vk_sdk_AppId">8188291</integer>
+    <string name="login">Войти</string>
+    <string name="logout">Выйти</string>
+    <string name="share_to_wall">Отправить на стену</string>
+    <string name="message_hint">Ваше сообщение</string>
+    <string name="wall_ok">Запись опубликована</string>
+    <string name="message_connection_error">Connection error</string>
+    <string name="message_unknown_error">Unknown error. Try again later.</string>
+
+</resources>
