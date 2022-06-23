@@ -21,9 +21,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
         if (VK.isLoggedIn()) {
             MainActivity.startFrom(this)
             finish()

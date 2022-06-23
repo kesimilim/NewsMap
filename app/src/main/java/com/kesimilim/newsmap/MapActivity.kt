@@ -1,5 +1,7 @@
 package com.kesimilim.newsmap
 
+import android.content.Context
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
@@ -62,5 +64,11 @@ class MapActivity : AppCompatActivity() {
         return addresses[0].locality
     }
 
-
+    companion object {
+        fun startFrom(context: Context) {
+            val intent = Intent(context, MapActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            context.startActivity(intent)
+        }
+    }
 }

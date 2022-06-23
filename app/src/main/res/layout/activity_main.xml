@@ -42,21 +42,30 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"/>
 
-        <EditText
-            android:id="@+id/messageET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="@string/message_hint"
-            android:textSize="16sp"
-            android:textColorHint="@android:color/darker_gray"
-            android:textColor="@color/black"/>
+<!--        <EditText-->
+<!--            android:id="@+id/messageET"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:hint="@string/message_hint"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColorHint="@android:color/darker_gray"-->
+<!--            android:textColor="@color/black"/>-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/shareBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/share_to_wall"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:backgroundTint="@color/blue" />-->
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/shareBtn"
+            android:id="@+id/newsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_to_wall"
+            android:layout_marginBottom="16dp"
+            android:text="Friends News"
             android:layout_gravity="center"
             app:backgroundTint="@color/blue" />
 
