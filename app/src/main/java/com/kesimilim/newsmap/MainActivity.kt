@@ -132,9 +132,11 @@ class MainActivity : AppCompatActivity() {
                             deactivated = friend.deactivated
                         )
 
-                        GlobalScope.launch(Dispatchers.IO) {
-                            database.addFriend(addFriend)
-                            showToast()
+                        if (friend.location.latitude != 0.0) {
+                            GlobalScope.launch(Dispatchers.IO) {
+                                database.addFriend(addFriend)
+                                //showToast()
+                            }
                         }
                     }
 

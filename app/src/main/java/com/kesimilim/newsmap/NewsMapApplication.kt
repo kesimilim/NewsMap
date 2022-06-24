@@ -3,13 +3,13 @@ package com.kesimilim.newsmap
 import android.app.Application
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKTokenExpiredHandler
+import com.yandex.mapkit.MapKitFactory
 
 class NewsMapApplication: Application() {
-
-    private val ACCESS_TOKEN = "b082f5afb082f5afb082f5afa5b0fe042cbb082b082f5afd222a646c6a636a75a15bca5"
-
     override fun onCreate() {
         super.onCreate()
+        MapKitFactory.setApiKey("da60e6fc-377b-4367-9a02-d5eaebc80e1a")
+        MapKitFactory.initialize(this)
         VK.addTokenExpiredHandler(tokenTracker)
     }
 
@@ -17,9 +17,5 @@ class NewsMapApplication: Application() {
         override fun onTokenExpired() {
             WelcomeActivity.startFrom(this@NewsMapApplication)
         }
-
     }
-
-
-
 }
