@@ -13,22 +13,34 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.kesimilim.newsmap.database.DatabaseBuilder
+import com.kesimilim.newsmap.database.NewsMapDatabase
+import com.yandex.mapkit.geometry.Point
+import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class GoogleMapFragment : Fragment() {
+class GoogleMapFragment(database: NewsMapDatabase) : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        GlobalScope.launch(Dispatchers.IO) {
+            val friendsList = database.FriendsDao().getAllFriends()
+            withContext(Dispatchers.Main) {
+                for (friend in friendsList) {
+                    googleMap.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(friend.latitude, friend.longitude))
+                            .title("${friend.firstName} ${friend.lastName}")
+                    )
+                }
+            }
+        }
+
+//        val sydney = LatLng(-34.0, 151.0)
+//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(56.633331, 47.866669)))
     }
 
     override fun onCreateView(

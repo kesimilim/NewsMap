@@ -19,6 +19,9 @@
         android:theme="@style/Theme.NewsMap"
         tools:targetApi="31">
         <activity
+            android:name=".GoogleActivity"
+            android:exported="false" />
+        <activity
             android:name=".YandexActivity"
             android:exported="false" />
         <activity
@@ -35,13 +38,9 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MapActivity"
-            android:exported="true" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" /> <!-- AIzaSyC-FsOeloqP7Fjs_Kek1aDRM6ckv0K9qdk -->
+            android:value="AIzaSyC-FsOeloqP7Fjs_Kek1aDRM6ckv0K9qdk" /> <!-- AIzaSyC-FsOeloqP7Fjs_Kek1aDRM6ckv0K9qdk --> <!--        YOUR_API_KEY-->
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"

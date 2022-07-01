@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.FriendsRoom
+import com.kesimilim.newsmap.dialogs.MapDialog
 import com.kesimilim.newsmap.model.GeoPoint
 import com.kesimilim.newsmap.model.VKUser
 import com.kesimilim.newsmap.model.Friends
@@ -54,9 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         val newsButton: Button = findViewById(R.id.newsBtn)
         newsButton.setOnClickListener {
-            val intent = Intent(this, YandexActivity::class.java)
-            intent.putExtra("FRIENDS_LIST", friendsData)
-            YandexActivity.startFrom(this)
+//            val intent = Intent(this, YandexActivity::class.java)
+//            intent.putExtra("FRIENDS_LIST", friendsData)
+//            YandexActivity.startFrom(this)
+            MapDialog(this).show()
         }
 
         requestUsers()
