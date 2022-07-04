@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
-import com.kesimilim.newsmap.GoogleActivity
+import com.kesimilim.newsmap.activity.GoogleActivity
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.YandexActivity
+import com.kesimilim.newsmap.activity.YandexActivity
 
 class MapDialog(context: Context): Dialog(context){
 
@@ -22,12 +22,12 @@ class MapDialog(context: Context): Dialog(context){
 
         val yandexButton: Button = findViewById(R.id.button_yandex_map)
         yandexButton.setOnClickListener {
-            YandexActivity.startFrom(context)
+            //YandexActivity.startFrom(context)
         }
 
         val googleButton: Button = findViewById(R.id.button_google_map)
         googleButton.setOnClickListener {
-            GoogleActivity.startFrom(context)
+            //GoogleActivity.startFrom(context)
         }
     }
 

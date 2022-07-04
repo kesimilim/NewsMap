@@ -1,4 +1,4 @@
-package com.kesimilim.newsmap
+package com.kesimilim.newsmap.activity
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.FriendsRoom
 import com.kesimilim.newsmap.dialogs.MapDialog
@@ -27,10 +28,8 @@ import com.squareup.picasso.Picasso
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
 import com.vk.dto.common.id.UserId
-import com.vk.sdk.api.base.dto.BaseUserGroupFields
 import com.vk.sdk.api.friends.FriendsService
 import com.vk.sdk.api.friends.dto.FriendsGetFieldsResponse
-import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import com.vk.sdk.api.users.dto.UsersFields
 import com.vk.sdk.api.wall.WallService
 import com.vk.sdk.api.wall.dto.WallGetResponse
@@ -38,14 +37,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private val database by lazy { DatabaseBuilder.getInstance(this).FriendsDao() }
     var friendsData = arrayListOf<Friends>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
 
         val logoutButton: Button = findViewById(R.id.logoutBtn)
         logoutButton.setOnClickListener {
@@ -310,7 +309,7 @@ class MainActivity : AppCompatActivity() {
         private const val IMAGE_REQ_CODE = 101
 
         fun startFrom(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, HomeActivity::class.java)
             context.startActivity(intent)
         }
     }

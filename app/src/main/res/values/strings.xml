@@ -10,5 +10,6 @@
     <string name="wall_ok">Запись опубликована</string>
     <string name="message_connection_error">Connection error</string>
     <string name="message_unknown_error">Unknown error. Try again later.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

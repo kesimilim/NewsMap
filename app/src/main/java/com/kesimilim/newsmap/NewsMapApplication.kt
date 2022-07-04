@@ -1,6 +1,7 @@
 package com.kesimilim.newsmap
 
 import android.app.Application
+import com.kesimilim.newsmap.activity.WelcomeActivity
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKTokenExpiredHandler
 import com.yandex.mapkit.MapKitFactory

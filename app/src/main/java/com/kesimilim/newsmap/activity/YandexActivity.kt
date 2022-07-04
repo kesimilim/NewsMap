@@ -1,14 +1,13 @@
-package com.kesimilim.newsmap
+package com.kesimilim.newsmap.activity
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.FriendsRoom
-import com.kesimilim.newsmap.model.Friends
-import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
