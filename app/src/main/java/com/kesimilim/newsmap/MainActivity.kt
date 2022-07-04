@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.FriendsRoom
 import com.kesimilim.newsmap.dialogs.MapDialog
+import com.kesimilim.newsmap.model.FriendPost
 import com.kesimilim.newsmap.model.GeoPoint
 import com.kesimilim.newsmap.model.VKUser
 import com.kesimilim.newsmap.model.Friends
@@ -25,9 +26,14 @@ import com.kesimilim.newsmap.requests.VKUsersCommand
 import com.squareup.picasso.Picasso
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
+import com.vk.dto.common.id.UserId
+import com.vk.sdk.api.base.dto.BaseUserGroupFields
 import com.vk.sdk.api.friends.FriendsService
 import com.vk.sdk.api.friends.dto.FriendsGetFieldsResponse
+import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import com.vk.sdk.api.users.dto.UsersFields
+import com.vk.sdk.api.wall.WallService
+import com.vk.sdk.api.wall.dto.WallGetResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -109,6 +115,22 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             ""
                         }
+                        val location = getFriendLocation(city)
+                        val postList = getPostList(friend.id)
+
+                        val item = FriendsRoom(
+                            id = 0,
+                            userId = friend.id.value,
+                            firstName = friend.firstName ?: "",
+                            lastName = friend.lastName ?: "",
+                            photo = friend.photo200 ?: "",
+                            city = city,
+                            latitude = location.latitude,
+                            longitude = location.longitude,
+                            deactivated = friend.deactivated != null,
+                            postList = postList
+                        )
+                        addInDatabase(item)
 
                         Friends(
                             id = friend.id.value,
@@ -116,32 +138,10 @@ class MainActivity : AppCompatActivity() {
                             lastName = friend.lastName ?: "",
                             photo = friend.photo200 ?: "",
                             city = city,
-                            location = getFriendLocation(city),
+                            location = location,
                             deactivated = friend.deactivated != null
                         )
                     }
-
-                    vkUsers.map{ friend ->
-                        val addFriend = FriendsRoom(
-                            id = 0,
-                            userId = friend.id,
-                            firstName = friend.firstName,
-                            lastName = friend.lastName,
-                            photo = friend.photo,
-                            city = friend.city,
-                            latitude = friend.location.latitude,
-                            longitude = friend.location.longitude,
-                            deactivated = friend.deactivated
-                        )
-
-                        if (friend.location.latitude != 0.0) {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                database.addFriend(addFriend)
-                                //showToast()
-                            }
-                        }
-                    }
-
                     showFriends(vkUsers)
                 }
             }
@@ -149,6 +149,39 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, error.toString())
             }
         })
+    }
+
+    private fun getPostList(id: UserId): List<FriendPost> {
+        var list: MutableList<List<FriendPost>> = mutableListOf()
+        //val fields = listOf(BaseUserGroupFields.)
+        VK.execute(WallService().wallGet(ownerId = id), object: VKApiCallback<WallGetResponse> {
+            override fun success(result: WallGetResponse) {
+                val postList = result.items
+                if (!isFinishing && postList.isNotEmpty()) {
+                    val friendPostList = postList.map { post ->
+                        FriendPost(
+                            id = post.id ?: 0,
+                            text = post.text ?: ""
+                        )
+                    }
+                    list.add(friendPostList)
+                }
+            }
+
+            override fun fail(error: Exception) {
+                Log.e(TAG, error.toString())
+            }
+        })
+        return list.get(0)
+    }
+
+    private fun addInDatabase(item: FriendsRoom) {
+        if (item.latitude != 0.0 && item.longitude != 0.0) {
+            GlobalScope.launch(Dispatchers.IO) {
+                database.addFriend(item)
+                //showToast()
+            }
+        }
     }
 
     private fun showToast() {
@@ -281,18 +314,18 @@ class MainActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
-}
 
-object PathUtils {
-    fun getPath(context: Context, uri: Uri): String {
-        if (uri.scheme == "file") {
-            if (uri.path != null) return uri.path!!
-            return ""
+    object PathUtils {
+        fun getPath(context: Context, uri: Uri): String {
+            if (uri.scheme == "file") {
+                if (uri.path != null) return uri.path!!
+                return ""
+            }
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor = context.contentResolver.query(uri, proj, null, null, null)
+            val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            return "file://" + cursor.getString(columnIndex)
         }
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(uri, proj, null, null, null)
-        val columnIndex = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        return "file://" + cursor.getString(columnIndex)
     }
 }

@@ -3,6 +3,7 @@ package com.kesimilim.newsmap.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kesimilim.newsmap.model.FriendPost
 import java.io.Serializable
 
 @Entity(tableName = "friends_table")
@@ -24,5 +25,7 @@ data class FriendsRoom(
     @ColumnInfo(name = "longitude")
     val longitude: Double,
     @ColumnInfo(name = "deactivated")
-    val deactivated: Boolean
+    val deactivated: Boolean,
+    @ColumnInfo(name = "post_list")
+    val postList: List<FriendPost>
 ) : Serializable
