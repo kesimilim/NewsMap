@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">News Map</string>
-    <!-- TODO: Remove or change this placeholder text -->
 
     <integer name="com_vk_sdk_AppId">8188291</integer>
     <string name="login">Войти</string>
