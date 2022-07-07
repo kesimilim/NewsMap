@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_homeFragment_to_googleMapFragment"
             app:destination="@id/googleMapFragment" />
+        <argument
+            android:name="message"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -41,3 +44,4 @@
         tools:layout="@layout/fragment_google_map" />
 
 </navigation>
+

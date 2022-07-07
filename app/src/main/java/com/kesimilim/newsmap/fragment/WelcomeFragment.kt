@@ -5,6 +5,7 @@ import android.view.View
 import android.webkit.WebViewClient
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kesimilim.newsmap.R
@@ -28,14 +29,18 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
         authLauncher = VK.login() { result : VKAuthenticationResult ->
             when (result) {
-                is VKAuthenticationResult.Success -> onLogin()
+                is VKAuthenticationResult.Success -> findNavController().navigate()
                 is VKAuthenticationResult.Failed -> onLoginFailed(result.exception)
             }
         }
 
-        binding = FragmentWelcomeBinding.bind(view)
-        binding.loginBtn.setOnClickListener {
-            authLauncher.launch(arrayListOf(VKScope.WALL, VKScope.PHOTOS))
+
+            val message = " HI! :3 "
+            val action = WelcomeFragmentDirections.actionWelcomeFragmentToHomeFragment(message)
+
+            findNavController().navigate(action)
+
+
         }
 
     }
