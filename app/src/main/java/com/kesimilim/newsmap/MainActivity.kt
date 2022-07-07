@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                             ""
                         }
                         val location = getFriendLocation(city)
-                        val postList = getPostList(friend.id)
+                        val postList = mutableListOf<FriendPost>()
 
                         val item = FriendsRoom(
                             id = 0,
@@ -149,30 +149,6 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, error.toString())
             }
         })
-    }
-
-    private fun getPostList(id: UserId): List<FriendPost> {
-        var list: MutableList<List<FriendPost>> = mutableListOf()
-        //val fields = listOf(BaseUserGroupFields.)
-        VK.execute(WallService().wallGet(ownerId = id), object: VKApiCallback<WallGetResponse> {
-            override fun success(result: WallGetResponse) {
-                val postList = result.items
-                if (!isFinishing && postList.isNotEmpty()) {
-                    val friendPostList = postList.map { post ->
-                        FriendPost(
-                            id = post.id ?: 0,
-                            text = post.text ?: ""
-                        )
-                    }
-                    list.add(friendPostList)
-                }
-            }
-
-            override fun fail(error: Exception) {
-                Log.e(TAG, error.toString())
-            }
-        })
-        return list.get(0)
     }
 
     private fun addInDatabase(item: FriendsRoom) {

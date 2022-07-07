@@ -37,18 +37,12 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
 
             withContext(Dispatchers.Main) {
                 for (friend in friendsList) {
-                    //addPoint(Point(friend.latitude, friend.longitude))
                     addPoint(friend)
                 }
             }
         }
 
     }
-
-    private fun addPoint(point: Point) {
-        mapObjects.addPlacemark(point, ImageProvider.fromResource(applicationContext, R.drawable.marker))
-    }
-
 
     private fun addPoint(friend: FriendsRoom) {
         mapObjects.addPlacemark(
