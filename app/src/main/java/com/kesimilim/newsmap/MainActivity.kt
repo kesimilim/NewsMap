@@ -18,22 +18,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.FriendsRoom
 import com.kesimilim.newsmap.dialogs.MapDialog
-import com.kesimilim.newsmap.model.FriendPost
-import com.kesimilim.newsmap.model.GeoPoint
-import com.kesimilim.newsmap.model.VKUser
-import com.kesimilim.newsmap.model.Friends
+import com.kesimilim.newsmap.model.*
 import com.kesimilim.newsmap.requests.VKUsersCommand
 import com.squareup.picasso.Picasso
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
 import com.vk.dto.common.id.UserId
-import com.vk.sdk.api.base.dto.BaseUserGroupFields
 import com.vk.sdk.api.friends.FriendsService
 import com.vk.sdk.api.friends.dto.FriendsGetFieldsResponse
-import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import com.vk.sdk.api.users.dto.UsersFields
 import com.vk.sdk.api.wall.WallService
-import com.vk.sdk.api.wall.dto.WallGetResponse
+import com.vk.sdk.api.wall.dto.WallGetExtendedResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -118,6 +113,8 @@ class MainActivity : AppCompatActivity() {
                         val location = getFriendLocation(city)
                         val postList = mutableListOf<FriendPost>()
 
+                        requestPost(friend.id)
+
                         val item = FriendsRoom(
                             id = 0,
                             userId = friend.id.value,
@@ -201,6 +198,28 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, IMAGE_REQ_CODE)
     }
 
+    private fun requestPost(id: UserId) {
+        VK.execute(WallService().wallGetExtended(ownerId = id, count = 100), object: VKApiCallback<WallGetExtendedResponse> {
+            override fun success(result: WallGetExtendedResponse) {
+                val wall = result.items
+                if (!isFinishing && wall.isNotEmpty()) {
+                    val posts = wall.map { post ->
+                        post.text
+                        /*
+                        * val attachments: List<WallWallpostAttachment>? = null
+                        * val copyHistory: List<WallWallpostFull>? = null,
+                        * val postId: Int? = null,
+                        * val text: String? = null,
+                        * */
+                    }
+                }
+            }
+            override fun fail(error: Exception) {
+                Log.e(TAG, error.toString())
+            }
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQ_CODE) {
@@ -221,7 +240,6 @@ class MainActivity : AppCompatActivity() {
         }
 //        VK.execute(VKWallPostCommand(messageField.text.toString(), photos), object: VKApiCallback<Int> {
 //            override fun success(result: Int) {
-//                // TODO Use ToastUtils
 //                Toast.makeText(this@MainActivity, R.string.wall_ok, Toast.LENGTH_SHORT).show()
 //            }
 //
