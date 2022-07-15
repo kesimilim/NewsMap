@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.kesimilim.newsmap.database.DatabaseBuilder
-import com.kesimilim.newsmap.database.entity.FriendsRoom
-import com.kesimilim.newsmap.model.Friends
-import com.yandex.mapkit.Animation
+import com.kesimilim.newsmap.database.entity.RoomFriend
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
@@ -44,7 +42,7 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
 
     }
 
-    private fun addPoint(friend: FriendsRoom) {
+    private fun addPoint(friend: RoomFriend) {
         mapObjects.addPlacemark(
             Point(
                 friend.latitude,
@@ -70,7 +68,7 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
     }
 
     override fun onMapObjectTap(friend: MapObject, point: Point): Boolean {
-        val data: FriendsRoom = friend.userData as FriendsRoom
+        val data: RoomFriend = friend.userData as RoomFriend
         Toast.makeText(this, "${data.firstName} ${data.lastName}", Toast.LENGTH_SHORT).show()
         return true
     }

@@ -2,11 +2,18 @@ package com.kesimilim.newsmap.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.vk.sdk.api.wall.dto.WallWallpostAttachment
+import com.vk.sdk.api.wall.dto.WallWallpostFull
 import org.json.JSONObject
 
 data class VKWall(
-val id: Int
-) //129580073
+    val postId: Int? = null,
+    val text: String? = null,
+    val attachments: List<WallWallpostAttachment>? = null,
+    val copyHistory: List<WallWallpostFull>? = null,
+)
+
+//129580073
 //) : Parcelable {
 //
 //    constructor(parcel: Parcel) : this(
