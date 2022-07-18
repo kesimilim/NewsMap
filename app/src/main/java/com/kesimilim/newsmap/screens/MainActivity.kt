@@ -1,19 +1,22 @@
-package com.kesimilim.newsmap
+package com.kesimilim.newsmap.screens
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.DatabaseBuilder
+import com.kesimilim.newsmap.database.entity.RoomAttachment
+import com.kesimilim.newsmap.database.entity.RoomCopyHistory
 import com.kesimilim.newsmap.database.entity.RoomFriend
 import com.kesimilim.newsmap.database.entity.RoomPost
 import com.kesimilim.newsmap.dialogs.MapDialog
@@ -34,10 +37,13 @@ import com.vk.sdk.api.wall.dto.WallWallpostFull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
-    private val database by lazy { DatabaseBuilder.getInstance(this).FriendsDao() }
+    private val database by lazy { DatabaseBuilder.getInstance(this) }
     var friendsData = arrayListOf<RoomFriend>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,12 +112,13 @@ class MainActivity : AppCompatActivity() {
                 val friends = result.items
                 if (!isFinishing && friends.isNotEmpty()) {
                     val vkUsers = friends.map { friend ->
+                        addInDatabase(friend)
                         RoomFriend(
                             firstName = friend.firstName ?: "",
                             lastName = friend.lastName ?: "",
                             photo = friend.photo200 ?: "",
-                            city = RoomFriend.RoomCity(city(friend))
-                        ).also { addInDatabase(friend) }
+                            city = RoomFriend.RoomCity(city(friend), 0.0, 0.0)
+                        )
                     }
                     showFriends(vkUsers)
                 }
@@ -129,28 +136,29 @@ class MainActivity : AppCompatActivity() {
                 if (!isFinishing && wall.isNotEmpty()) {
                     wall.map { post ->
                         RoomPost(
-                            postId = post.postId,
-                            ownerId = post.ownerId?.value,
+                            id = 0,
+                            postId = post.id,
+                            userId = post.ownerId?.value,
                             postText = post.text
                         )
-                        addPostInDatabase(post) // Database Action 2
+                        addPostInDatabase(id.value, post) // Database Action 2
 
-                        if (post.attachments!!.isNotEmpty()) {
-                            post.attachments?.map { attachment ->
-                                addAttachmentInDatabase(attachment) // Database Action 2*
-                            }
-                        }
+//                        if (post.attachments!!.isNotEmpty()) {
+//                            post.attachments?.map { attachment ->
+//                                addAttachmentInDatabase(attachment) // Database Action 2*
+//                            }
+//                        }
 
-                        if (post.copyHistory!!.isNotEmpty()) {
-                            post.copyHistory?.map { copyHistory ->
-                                addPostInDatabase(copyHistory) // Database Action 3
-                                if (copyHistory.attachments!!.isNotEmpty()) {
-                                    copyHistory.attachments?.map { attachment ->
-                                        addAttachmentInDatabase(attachment) // Database Action 3*
-                                    }
-                                }
-                            }
-                        }
+//                        if (post.copyHistory!!.isNotEmpty()) {
+//                            post.copyHistory?.map { copyHistory ->
+//                                addPostInDatabase(copyHistory) // Database Action 3
+//                                if (copyHistory.attachments!!.isNotEmpty()) {
+//                                    copyHistory.attachments?.map { attachment ->
+//                                        addAttachmentInDatabase(attachment) // Database Action 3*
+//                                    }
+//                                }
+//                            }
+//                        }
                     }
                 }
             }
@@ -160,42 +168,122 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun getLocationFromAddress(strAddress: String?): GeoPoint? {
+        if (strAddress != "") {
+            val coder = Geocoder(this)
+            val address: List<Address>?
+            try {
+                address = coder.getFromLocationName(strAddress, 5)
+                if (address == null) {
+                    return null
+                }
+                val location: Address = address[0]
+                return GeoPoint(
+                    location.latitude,
+                    location.longitude
+                )
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return null
+    }
+
     private fun addInDatabase(friend: UsersUserFull) {
         // Database Action 1
-        val item = RoomFriend(
-            userId = friend.id.value,
-            firstName = friend.firstName ?: "",
-            lastName = friend.lastName ?: "",
-            photo = friend.photo200 ?: "",
-            city = RoomFriend.RoomCity(city(friend)).apply { this.setLocation(this@MainActivity) }
-        )
+        val city = city(friend)
+        val geo = getLocationFromAddress(city)
+        var latitude = geo?.latitude
+        var longitude = geo?.longitude
 
-        if (item.city.latitude != 0.0 && item.city.longitude != 0.0) {
+        if (city == "Uren") {
+            latitude = 57.46
+            longitude = 45.7847
+        }
+
+        if (latitude != 0.0 && latitude != null) {
+            val item = RoomFriend(
+                id = 0,
+                userId = friend.id.value,
+                firstName = friend.firstName ?: "",
+                lastName = friend.lastName ?: "",
+                photo = friend.photo200 ?: "",
+                city = RoomFriend.RoomCity(city, latitude, longitude)
+            )
+
             GlobalScope.launch(Dispatchers.IO) {
-                database.addFriend(item)
+                database.friendsDao().addFriend(item)
             }
+            Log.i(TAG, "${item.firstName} ${item.lastName} added in database/n ${city}: ${latitude}, ${longitude}")
+//            Toast.makeText(this, "${city}: ${latitude}, ${longitude}", Toast.LENGTH_SHORT).show()
         }
 
         requestPost(friend.id)
     }
 
-    private fun addPostInDatabase(post: WallWallpostFull) {
+    private fun addPostInDatabase(userId: Long, post: WallWallpostFull) {
+        val item = RoomPost(
+            id = 0,
+            postId = post.id,
+            userId = userId,
+            postText = post.text,
+            attachment = post.attachments != null,
+            copyHistory = post.copyHistory != null
+        )
 
+        GlobalScope.launch(Dispatchers.IO) {
+            database.postDao().addPost(item)
+        }
+        Log.i(TAG, "Post added in database")
+
+        if (item.attachment) {
+            post.attachments!!.map { attachment ->
+                addAttachmentInDatabase(item.postId!!, attachment)
+            }
+        }
     }
 
-    private fun addAttachmentInDatabase(attachments: WallWallpostAttachment) {
-
+    private fun addAttachmentInDatabase(postId: Int, attachments: WallWallpostAttachment) {
+        val item = RoomAttachment(
+            id = 0,
+            postId = postId,
+            photo = attachments.photo?.photo256
+        )
+        GlobalScope.launch(Dispatchers.IO) {
+            database.attachmentDao().addAttachment(item)
+        }
+        Log.i(TAG, "Attachment added in database")
     }
 
-    private fun city(friend: UsersUserFull): String {
+    private fun addCopyHistoryInDatabase(postId: Int, post: WallWallpostFull) {
+        val item = RoomCopyHistory(
+            id = 0,
+            postId = postId,
+            postText = post.text,
+            attachment = post.attachments!!.isNotEmpty(),
+        )
+
+        GlobalScope.launch(Dispatchers.IO) {
+            database.copyHistoryDao().addCopyHistory(item)
+        }
+        Log.i(TAG, "Copy history post added in database")
+
+        if (item.attachment) {
+            post.attachments!!.map { attachment ->
+                addAttachmentInDatabase(item.postId!!, attachment)
+            }
+        }
+    }
+
+    private fun city(friend: UsersUserFull): String? {
         return if (friend.city != null) {
-            friend.city?.title ?: ""
+            friend.city?.title
         } else if (friend.homeTown != null) {
-            friend.homeTown ?: ""
+            friend.homeTown
         } else if (friend.country != null) {
-            friend.country?.title ?: ""
+            friend.country?.title
         } else {
-            ""
+            null
         }
     }
 

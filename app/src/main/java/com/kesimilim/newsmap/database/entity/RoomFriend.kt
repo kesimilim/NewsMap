@@ -18,7 +18,7 @@ import java.io.Serializable
 )
 data class RoomFriend(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = 0,
+    val id: Int = 0,
 
     @ColumnInfo(name = "user_id")
     override val userId: Long = 0,
@@ -41,27 +41,12 @@ data class RoomFriend(
 //        val id: Int? = 0,
 
 //        @ColumnInfo(name = "name")
-        override val name: String? = null,
+        override val name: String?,
 
 //        @ColumnInfo(name = "latitude")
-        override var latitude: Double? = null,
+        override var latitude: Double?,
 
 //        @ColumnInfo(name = "longitude")
-        override var longitude: Double? = null
-    ): City {
-
-        override fun setLocation(context: Context) {
-            if (name == "Uren") {
-                latitude = 57.46
-                longitude = 45.7847
-            }
-
-            Geocoder(context).getFromLocationName(name, 5)[0]?.let { address ->
-                latitude = address.latitude
-                longitude = address.longitude
-            }
-        }
-
-    }
-
+        override var longitude: Double?
+    ): City
 }

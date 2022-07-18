@@ -19,6 +19,7 @@ object DatabaseBuilder {
         Room.databaseBuilder(
             context.applicationContext,
             NewsMapDatabase::class.java,
-            "NewsAppDatabase"
-        ).build()
+            "NewsAppDatabase")
+            .fallbackToDestructiveMigration()
+            .build()
 }
