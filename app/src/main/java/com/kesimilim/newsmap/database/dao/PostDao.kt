@@ -11,6 +11,6 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addPost(post: RoomPost)
 
-    @Query("SELECT * FROM post_table WHERE post_user_id = :userId")
-    fun getPostById(userId: Long): List<RoomPost>
+//    @Query("SELECT * FROM post_table WHERE post_user_id = :userId")
+//    fun getPostById(userId: Long): List<RoomPost>
 }

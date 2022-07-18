@@ -11,6 +11,6 @@ interface AttachmentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addAttachment(attachment: RoomAttachment)
 
-    @Query("SELECT * FROM attachment_table WHERE attachment_post_id = :postId")
-    fun getAttachmentById(postId: Int): List<RoomAttachment>
+//    @Query("SELECT * FROM attachment_table WHERE attachment_post_id = :postId")
+//    fun getAttachmentById(postId: Int): List<RoomAttachment>
 }

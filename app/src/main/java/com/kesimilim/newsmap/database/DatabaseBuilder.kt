@@ -21,5 +21,6 @@ object DatabaseBuilder {
             NewsMapDatabase::class.java,
             "NewsAppDatabase")
             .fallbackToDestructiveMigration()
+//            .allowMainThreadQueries()
             .build()
 }

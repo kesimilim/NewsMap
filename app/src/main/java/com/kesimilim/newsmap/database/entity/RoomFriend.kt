@@ -5,23 +5,24 @@ import android.location.Geocoder
 import androidx.room.*
 import com.kesimilim.newsmap.model.City
 import com.kesimilim.newsmap.model.Friend
+import com.vk.dto.common.id.UserId
 import java.io.Serializable
 
 @Entity(
     tableName = "friends_table",
-    indices = [
-        Index(
-            value = arrayOf("user_id"),
-            unique = true
-        )
-    ]
+//    indices = [
+//        Index(
+//            value = arrayOf("user_id"),
+//            unique = true
+//        )
+//    ]
 )
 data class RoomFriend(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int,
 
     @ColumnInfo(name = "user_id")
-    override val userId: Long = 0,
+    override val userId: Long,
 
     @ColumnInfo(name = "first_name")
     override val firstName: String,
@@ -34,6 +35,9 @@ data class RoomFriend(
 
     @Embedded
     override val city: RoomCity,
+
+    @Embedded
+    val vkUserId: UserId
 ) : Friend, Serializable {
 
     data class RoomCity(

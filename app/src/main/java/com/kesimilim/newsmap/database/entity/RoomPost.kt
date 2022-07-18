@@ -7,24 +7,24 @@ import com.kesimilim.newsmap.model.CopyHistory
 
 @Entity(
     tableName = "post_table",
-    foreignKeys = [
-        ForeignKey(
-            entity = RoomFriend::class,
-            parentColumns = arrayOf("user_id"),
-            childColumns = arrayOf("post_user_id"),
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [
-        Index(
-            value = ["post_user_id"],
-            unique = true
-        ),
-        Index(
-            value = ["post_id"],
-            unique = true
-        )
-    ]
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = RoomFriend::class,
+//            parentColumns = arrayOf("user_id"),
+//            childColumns = arrayOf("post_user_id"),
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ],
+//    indices = [
+//        Index(
+//            value = ["post_user_id"],
+//            unique = true
+//        ),
+//        Index(
+//            value = ["post_id"],
+//            unique = true
+//        )
+//    ]
 )
 data class RoomPost(
     @PrimaryKey(autoGenerate = true)
