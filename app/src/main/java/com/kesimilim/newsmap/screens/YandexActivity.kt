@@ -1,10 +1,11 @@
-package com.kesimilim.newsmap
+package com.kesimilim.newsmap.screens
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.RoomFriend
 import com.yandex.mapkit.MapKitFactory
@@ -21,7 +22,7 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
 
     lateinit var mapView: MapView
     lateinit var mapObjects: MapObjectCollection;
-    private val database by lazy { DatabaseBuilder.getInstance(this).FriendsDao() }
+    private val database by lazy { DatabaseBuilder.getInstance(this).friendsDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +46,8 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
     private fun addPoint(friend: RoomFriend) {
         mapObjects.addPlacemark(
             Point(
-                friend.latitude,
-                friend.longitude
+                friend.city.latitude!!,
+                friend.city.longitude!!
             ),
             ImageProvider.fromResource(applicationContext, R.drawable.marker)
         ).let {

@@ -19,13 +19,13 @@
         android:theme="@style/Theme.NewsMap"
         tools:targetApi="31">
         <activity
-            android:name=".GoogleActivity"
+            android:name=".screens.GoogleActivity"
             android:exported="false" />
         <activity
-            android:name=".YandexActivity"
+            android:name=".screens.YandexActivity"
             android:exported="false" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".screens.WelcomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:label="@string/app_name"
@@ -42,7 +42,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC-FsOeloqP7Fjs_Kek1aDRM6ckv0K9qdk" /> <!-- AIzaSyC-FsOeloqP7Fjs_Kek1aDRM6ckv0K9qdk --> <!--        YOUR_API_KEY-->
         <activity
-            android:name=".MainActivity"
+            android:name=".screens.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name" />
     </application>

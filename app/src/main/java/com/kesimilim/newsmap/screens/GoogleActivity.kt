@@ -1,9 +1,10 @@
-package com.kesimilim.newsmap
+package com.kesimilim.newsmap.screens
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.DatabaseBuilder
 
 class GoogleActivity : AppCompatActivity() {

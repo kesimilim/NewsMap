@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
-import com.kesimilim.newsmap.GoogleActivity
+import com.kesimilim.newsmap.screens.GoogleActivity
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.YandexActivity
+import com.kesimilim.newsmap.screens.YandexActivity
 
 class MapDialog(context: Context): Dialog(context){
 
