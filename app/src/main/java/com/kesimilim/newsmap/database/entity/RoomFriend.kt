@@ -21,9 +21,6 @@ data class RoomFriend(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
-    @ColumnInfo(name = "user_id")
-    override val userId: Long,
-
     @ColumnInfo(name = "first_name")
     override val firstName: String,
 
@@ -41,16 +38,8 @@ data class RoomFriend(
 ) : Friend, Serializable {
 
     data class RoomCity(
-//        @PrimaryKey(autoGenerate = true)
-//        val id: Int? = 0,
-
-//        @ColumnInfo(name = "name")
         override val name: String?,
-
-//        @ColumnInfo(name = "latitude")
         override var latitude: Double?,
-
-//        @ColumnInfo(name = "longitude")
         override var longitude: Double?
     ): City
 }

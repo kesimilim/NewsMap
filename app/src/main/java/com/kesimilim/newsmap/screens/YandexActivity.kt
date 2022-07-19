@@ -5,9 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.database.DatabaseBuilder
 import com.kesimilim.newsmap.database.entity.RoomFriend
+import com.kesimilim.newsmap.repository.FriendRepository
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
@@ -16,13 +17,18 @@ import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class YandexActivity : AppCompatActivity(), MapObjectTapListener {
 
+    init {
+        NewsMapApplication.appComponent.inject(this)
+    }
+
+    @Inject lateinit var friendRepository: FriendRepository
+
     lateinit var mapView: MapView
     lateinit var mapObjects: MapObjectCollection;
-    private val database by lazy { DatabaseBuilder.getInstance(this).friendsDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +37,12 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
         mapView = findViewById(R.id.mapview)
         mapObjects = mapView.map.mapObjects.addCollection()
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val friendsList = database.getAllFriends()
-
-            withContext(Dispatchers.Main) {
-                for (friend in friendsList) {
-                    addPoint(friend)
-                }
+        GlobalScope.launch(Dispatchers.Main) {
+            val friendsList = friendRepository.fetchFriendList()
+            for (friend in friendsList) {
+                addPoint(friend)
             }
         }
-
     }
 
     private fun addPoint(friend: RoomFriend) {
