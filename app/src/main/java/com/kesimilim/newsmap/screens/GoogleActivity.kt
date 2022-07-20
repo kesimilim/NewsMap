@@ -4,23 +4,35 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.database.DatabaseBuilder
+import com.kesimilim.newsmap.repository.FriendRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class GoogleActivity : AppCompatActivity() {
 
-    private val database by lazy { DatabaseBuilder.getInstance(this) }
+    init {
+        NewsMapApplication.appComponent.inject(this)
+    }
+
+    @Inject
+    lateinit var friendRepository: FriendRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google)
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.container, GoogleMapFragment(database))
-            .addToBackStack(null)
-            .commit()
-
+        GlobalScope.launch(Dispatchers.Main) {
+            val friend = friendRepository.fetchFriendList()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.container, GoogleMapFragment(friend))
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     companion object {

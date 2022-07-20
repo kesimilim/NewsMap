@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.kesimilim.newsmap.R
+import com.kesimilim.newsmap.screens.main.MainActivity
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope

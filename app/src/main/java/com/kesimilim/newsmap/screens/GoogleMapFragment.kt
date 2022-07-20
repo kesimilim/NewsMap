@@ -13,30 +13,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.database.NewsMapDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.kesimilim.newsmap.database.entity.RoomFriend
 
-class GoogleMapFragment(database: NewsMapDatabase) : Fragment() {
+class GoogleMapFragment(friendsList: List<RoomFriend>) : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
-        GlobalScope.launch(Dispatchers.IO) {
-            val friendsList = database.friendsDao().getAllFriends()
-            withContext(Dispatchers.Main) {
-                for (friend in friendsList) {
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(LatLng(friend.city.latitude!!, friend.city.longitude!!))
-                            .title("${friend.firstName} ${friend.lastName}")
-                    )
-                }
-            }
+        for (friend in friendsList) {
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(LatLng(friend.city.latitude!!, friend.city.longitude!!))
+                    .title("${friend.firstName} ${friend.lastName}")
+            )
         }
-
-//        val sydney = LatLng(-34.0, 151.0)
-//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(56.633331, 47.866669)))
     }
 
