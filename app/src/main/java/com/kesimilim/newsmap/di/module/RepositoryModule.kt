@@ -1,6 +1,8 @@
 package com.kesimilim.newsmap.di.module
 
 import android.content.Context
+import com.kesimilim.newsmap.database.dao.AttachmentDao
+import com.kesimilim.newsmap.database.dao.CopyHistoryDao
 import com.kesimilim.newsmap.database.dao.FriendsDao
 import com.kesimilim.newsmap.database.dao.PostDao
 import com.kesimilim.newsmap.repository.FriendRepository
@@ -47,7 +49,10 @@ class RepositoryModule(private val context: Context) {
 
     @Singleton
     @Provides
-    fun providePostRemoteDataSource(): PostRemoteDataSource = PostRemoteDataSourceImpl()
+    fun providePostRemoteDataSource(
+        attachmentDao: AttachmentDao,
+        copyHistoryDao: CopyHistoryDao
+    ): PostRemoteDataSource = PostRemoteDataSourceImpl(attachmentDao, copyHistoryDao)
 
     @Singleton
     @Provides

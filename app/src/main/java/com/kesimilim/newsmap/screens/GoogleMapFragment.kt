@@ -25,8 +25,6 @@ class GoogleMapFragment(friendsList: List<RoomFriend>) : Fragment() {
                     .title("${friend.firstName} ${friend.lastName}")
             )
         }
-//        val sydney = LatLng(-34.0, 151.0)
-//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(56.633331, 47.866669)))
     }
 

@@ -12,8 +12,9 @@ class FriendRepository(
 ) {
     suspend fun fetchFriendList(): List<RoomFriend> = withContext(Dispatchers.IO) {
         friendLocalDataSource.getFriendList().ifEmpty {
-            friendLocalDataSource.setFriendList(friendRemoteDataSource.getFriendList())
-            friendRemoteDataSource.getFriendList()
+            val friendList = friendRemoteDataSource.getFriendList()
+            friendLocalDataSource.setFriendList(friendList)
+            friendList
         }
     }
 }
