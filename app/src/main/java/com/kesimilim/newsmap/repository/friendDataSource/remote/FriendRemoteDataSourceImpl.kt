@@ -49,26 +49,29 @@ class FriendRemoteDataSourceImpl(private val context: Context): FriendRemoteData
 
     private fun getRoomFriend(friend: UsersUserFull): RoomFriend? {
         val city = city(friend)
-        val geo = getLocationFromAddress(city)
-        var latitude = geo?.latitude
-        var longitude = geo?.longitude
+        if (city != null) {
+            val geo = getLocationFromAddress(city)
+            if (geo != null) {
+                var latitude = geo.latitude
+                var longitude = geo.longitude
 
-        if (city == "Uren") {
-            latitude = 57.46
-            longitude = 45.7847
+                if (city == "Uren") {
+                    latitude = 57.46
+                    longitude = 45.7847
+                }
+
+                if (latitude != 0.0 && latitude != null) {
+                    return RoomFriend(
+                        id = 0,
+                        firstName = friend.firstName ?: "",
+                        lastName = friend.lastName ?: "",
+                        photo = friend.photo200 ?: "",
+                        city = RoomFriend.RoomCity(city, latitude, longitude),
+                        vkUserId = friend.id
+                    )
+                }
+            }
         }
-
-        if (latitude != 0.0 && latitude != null) {
-            return RoomFriend(
-                id = 0,
-                firstName = friend.firstName ?: "",
-                lastName = friend.lastName ?: "",
-                photo = friend.photo200 ?: "",
-                city = RoomFriend.RoomCity(city, latitude, longitude),
-                vkUserId = friend.id
-            )
-        }
-
         return null
     }
 
@@ -84,13 +87,13 @@ class FriendRemoteDataSourceImpl(private val context: Context): FriendRemoteData
         }
     }
 
-    private fun getLocationFromAddress(strAddress: String?): GeoPoint? {
+    private fun getLocationFromAddress(strAddress: String): GeoPoint? {
         if (strAddress != "") {
             val coder = Geocoder(context)
-            val address: List<Address>?
+            val address: List<Address>
             try {
                 address = coder.getFromLocationName(strAddress, 5)
-                if (address == null) {
+                if (address == null || address.isEmpty()) {
                     return null
                 }
                 val location: Address = address[0]
@@ -99,7 +102,7 @@ class FriendRemoteDataSourceImpl(private val context: Context): FriendRemoteData
                     location.longitude
                 )
             } catch (e: IOException) {
-                e.printStackTrace()
+                return null
             }
         }
         return null

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.kesimilim.newsmap.database.NewsMapDatabase
 import com.kesimilim.newsmap.database.dao.AttachmentDao
-import com.kesimilim.newsmap.database.dao.CopyHistoryDao
 import com.kesimilim.newsmap.database.dao.FriendsDao
 import com.kesimilim.newsmap.database.dao.PostDao
 import dagger.Module
@@ -38,8 +37,4 @@ class DatabaseModule(private val context: Context) {
     @Singleton
     @Provides
     fun provideAttachmentDao(database: NewsMapDatabase): AttachmentDao = database.attachmentDao()
-
-    @Singleton
-    @Provides
-    fun provideCopyHistoryDao(database: NewsMapDatabase): CopyHistoryDao = database.copyHistoryDao()
 }

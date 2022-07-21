@@ -1,4 +1,4 @@
-package com.kesimilim.newsmap.screens
+package com.kesimilim.newsmap.screens.maps.google
 
 import android.content.Context
 import android.content.Intent

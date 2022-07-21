@@ -2,6 +2,7 @@ package com.kesimilim.newsmap.repository.postDataSource.local
 
 import com.kesimilim.newsmap.database.dao.PostDao
 import com.kesimilim.newsmap.database.entity.RoomPost
+import com.kesimilim.newsmap.database.entity.RoomPostWithAttachment
 import com.vk.dto.common.id.UserId
 
 class PostLocalDataSourceImpl(private val postDao: PostDao): PostLocalDataSource {
@@ -13,4 +14,7 @@ class PostLocalDataSourceImpl(private val postDao: PostDao): PostLocalDataSource
             postDao.addPost(post)
         }
     }
+
+    override suspend fun getPostAttachment(id: UserId): List<RoomPostWithAttachment> = postDao.getPostAttachmentList(id.value)
+
 }

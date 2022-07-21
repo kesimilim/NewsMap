@@ -1,6 +1,7 @@
 package com.kesimilim.newsmap.repository
 
 import com.kesimilim.newsmap.database.entity.RoomPost
+import com.kesimilim.newsmap.database.entity.RoomPostWithAttachment
 import com.kesimilim.newsmap.repository.postDataSource.local.PostLocalDataSource
 import com.kesimilim.newsmap.repository.postDataSource.remote.PostRemoteDataSource
 import com.vk.dto.common.id.UserId
@@ -16,6 +17,13 @@ class PostRepository (
             val postList = postRemoteDataSource.getPostList(id)
             postLocalDataSource.setPostList(postList)
             postList
+        }
+    }
+
+    suspend fun fetchPostWithAttachmentList(id: UserId): List<RoomPostWithAttachment> = withContext(Dispatchers.IO) {
+        postLocalDataSource.getPostAttachment(id).ifEmpty {
+            postLocalDataSource.setPostList(postRemoteDataSource.getPostList(id))
+            postLocalDataSource.getPostAttachment(id)
         }
     }
 }

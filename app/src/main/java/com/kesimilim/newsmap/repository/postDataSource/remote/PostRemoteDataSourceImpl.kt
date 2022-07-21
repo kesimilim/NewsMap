@@ -1,10 +1,7 @@
 package com.kesimilim.newsmap.repository.postDataSource.remote
 
-import android.util.Log
 import com.kesimilim.newsmap.database.dao.AttachmentDao
-import com.kesimilim.newsmap.database.dao.CopyHistoryDao
 import com.kesimilim.newsmap.database.entity.RoomAttachment
-import com.kesimilim.newsmap.database.entity.RoomCopyHistory
 import com.kesimilim.newsmap.database.entity.RoomPost
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
@@ -19,8 +16,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.suspendCoroutine
 
 class PostRemoteDataSourceImpl(
-    private val attachmentDao: AttachmentDao,
-    private val copyHistoryDao: CopyHistoryDao
+    private val attachmentDao: AttachmentDao
 ): PostRemoteDataSource {
     override suspend fun getPostList(id: UserId): List<RoomPost> = suspendCoroutine { list ->
         VK.execute(
@@ -46,37 +42,41 @@ class PostRemoteDataSourceImpl(
     }
 
     private fun getRoomPost(post: WallWallpostFull): RoomPost {
-        val item = RoomPost(
+        val postText: String? = if (post.text != "") post.text else null
+
+        var item = RoomPost(
             id = 0,
             userId = post.fromId?.value,
             postId = post.id,
-            postText = post.text,
+            postText = postText,
             attachment = post.attachments != null,
-            copyHistory = post.copyHistory != null
         )
 
         if (item.attachment) {
             post.attachments?.map { attachment ->
-                addAttachment(post.id!!, attachment.photo)
+                if (attachment.type.name == "PHOTO" && attachment.photo?.sizes != null) {
+                    addAttachment(post.id!!, attachment.photo!!)
+                }
             }
         }
 
-        if (item.copyHistory) {
+        if (post.copyHistory != null) {
             post.copyHistory?.map { copyHistory ->
-                val itemCopyHistory = RoomCopyHistory(
+                val copyHistoryText: String? = if (copyHistory.text != "") copyHistory.text else null
+                item = RoomPost(
                     id = 0,
+                    userId = post.fromId?.value,
                     postId = post.id,
-                    postText = copyHistory.text,
+                    postText = postText,
+                    copyHistoryText = copyHistoryText,
                     attachment = copyHistory.attachments != null
                 )
 
-                GlobalScope.launch(Dispatchers.IO) {
-                    copyHistoryDao.addCopyHistory(itemCopyHistory)
-                }
-
-                if (itemCopyHistory.attachment) {
+                if (item.attachment) {
                     copyHistory.attachments?.map { attachment ->
-                        addAttachment(post.id!!, attachment.photo)
+                        if (attachment.type.name == "PHOTO" && attachment.photo?.sizes != null) {
+                            addAttachment(post.id!!, attachment.photo!!)
+                        }
                     }
                 }
             }
@@ -84,13 +84,13 @@ class PostRemoteDataSourceImpl(
         return item
     }
 
-    private fun addAttachment(postId: Int, photo: PhotosPhoto?) {
+    private fun addAttachment(postId: Int, photo: PhotosPhoto) {
         GlobalScope.launch(Dispatchers.IO) {
             attachmentDao.addAttachment(
                 RoomAttachment(
                     id = 0,
                     postId = postId,
-                    photo = photo?.sizes?.get(0)
+                    photo = photo.sizes?.get(0)
                 )
             )
         }

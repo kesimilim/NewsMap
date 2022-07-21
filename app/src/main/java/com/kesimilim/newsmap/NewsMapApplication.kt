@@ -5,7 +5,7 @@ import com.kesimilim.newsmap.di.AppComponent
 import com.kesimilim.newsmap.di.DaggerAppComponent
 import com.kesimilim.newsmap.di.module.DatabaseModule
 import com.kesimilim.newsmap.di.module.RepositoryModule
-import com.kesimilim.newsmap.screens.WelcomeActivity
+import com.kesimilim.newsmap.screens.welcome.WelcomeActivity
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKTokenExpiredHandler
 import com.yandex.mapkit.MapKitFactory
@@ -45,7 +45,5 @@ class NewsMapApplication: Application() {
             .build()
         appComponent.inject(this)
     }
-
-    fun component(): DaggerAppComponent = appComponent as DaggerAppComponent
 
 }
