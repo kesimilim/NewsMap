@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/transparent">
+    android:orientation="horizontal"
+    app:cardCornerRadius="25dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_google_map"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Google Map"
-        app:backgroundTint="@color/blue"
-        app:icon="@drawable/ic_google_logo"
-        app:iconSize="30dp" />
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_yandex_map"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Yandex Map"
-        app:backgroundTint="@color/blue"
-        app:icon="@drawable/ic_yandex_logo"
-        app:iconSize="30dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_google_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="Google Map"
+            app:backgroundTint="@color/blue"
+            app:icon="@drawable/ic_google_logo"
+            app:iconSize="30dp" />
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_yandex_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="Yandex Map"
+            app:backgroundTint="@color/blue"
+            app:icon="@drawable/ic_yandex_logo"
+            app:iconSize="30dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

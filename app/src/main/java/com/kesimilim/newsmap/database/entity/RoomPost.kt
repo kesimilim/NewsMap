@@ -16,9 +16,9 @@ data class RoomPost(
     @ColumnInfo(name = "post_text")
     val postText: String? = null,
 
+    @ColumnInfo(name = "copy_history_text")
+    val copyHistoryText: String? = null,
+
     @ColumnInfo(name = "post_attachment")
     val attachment: Boolean = false,
-
-    @ColumnInfo(name = "post_copy_history")
-    val copyHistory: Boolean = false,
 )

@@ -1,4 +1,4 @@
-package com.kesimilim.newsmap.screens
+package com.kesimilim.newsmap.screens.maps.yandex
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.entity.RoomFriend
 import com.kesimilim.newsmap.repository.FriendRepository
+import com.kesimilim.newsmap.screens.wall.WallActivity
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
@@ -72,7 +73,10 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
 
     override fun onMapObjectTap(friend: MapObject, point: Point): Boolean {
         val data: RoomFriend = friend.userData as RoomFriend
-        Toast.makeText(this, "${data.firstName} ${data.lastName}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,  "user -> ${data.firstName} ${data.lastName} ", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, WallActivity::class.java)
+        intent.putExtra("friendId", data.vkUserId.value)
+        this.startActivity(intent)
         return true
     }
 
