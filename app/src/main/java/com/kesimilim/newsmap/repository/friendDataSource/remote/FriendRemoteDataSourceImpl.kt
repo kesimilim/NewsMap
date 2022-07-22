@@ -56,8 +56,8 @@ class FriendRemoteDataSourceImpl(private val context: Context): FriendRemoteData
                 var longitude = geo.longitude
 
                 if (city == "Uren") {
-                    latitude = 57.46
-                    longitude = 45.7847
+                    latitude = 57.455218599999995
+                    longitude = 45.7910542
                 }
 
                 if (latitude != 0.0 && latitude != null) {

@@ -9,7 +9,7 @@ import com.kesimilim.newsmap.screens.maps.google.GoogleActivity
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.screens.maps.yandex.YandexActivity
 
-class MapDialog(context: Context): Dialog(context){
+class SelectMapDialog(context: Context): Dialog(context){
 
     init {
         setCancelable(true)
@@ -18,7 +18,7 @@ class MapDialog(context: Context): Dialog(context){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_maps)
+        setContentView(R.layout.dialog_select_map)
 
         val yandexButton: Button = findViewById(R.id.button_yandex_map)
         yandexButton.setOnClickListener {
