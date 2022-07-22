@@ -1,16 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".screens.wall.WallActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/wallRecyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_post" />
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-</ScrollView>
+        <ImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_google_logo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginVertical="5dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                tools:text="Name LastName"/>
+
+            <TextView
+                android:id="@+id/cityTextView"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginVertical="5dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                tools:text="Name LastName"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wallRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_post" />
+
+    </ScrollView>
+
+</LinearLayout>

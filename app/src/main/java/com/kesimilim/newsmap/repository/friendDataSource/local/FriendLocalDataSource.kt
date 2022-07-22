@@ -5,4 +5,5 @@ import com.kesimilim.newsmap.database.entity.RoomFriend
 interface FriendLocalDataSource {
     suspend fun getFriendList(): List<RoomFriend>
     suspend fun setFriendList(friendList: List<RoomFriend>)
+    suspend fun getFriend(id: Long): RoomFriend
 }

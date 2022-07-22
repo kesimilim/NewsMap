@@ -63,6 +63,7 @@ class FriendRemoteDataSourceImpl(private val context: Context): FriendRemoteData
                 if (latitude != 0.0 && latitude != null) {
                     return RoomFriend(
                         id = 0,
+                        userId = friend.id.value,
                         firstName = friend.firstName ?: "",
                         lastName = friend.lastName ?: "",
                         photo = friend.photo200 ?: "",

@@ -12,4 +12,6 @@ class FriendLocalDataSourceImpl(private val friendDao: FriendsDao): FriendLocalD
             friendDao.addFriend(friend)
         }
     }
+
+    override suspend fun getFriend(id: Long): RoomFriend = friendDao.getFriend(id)
 }
