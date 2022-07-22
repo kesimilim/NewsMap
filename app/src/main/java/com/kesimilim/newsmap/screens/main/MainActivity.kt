@@ -13,7 +13,7 @@ import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.NewsMapDatabase
 import com.kesimilim.newsmap.database.entity.RoomFriend
-import com.kesimilim.newsmap.dialogs.MapDialog
+import com.kesimilim.newsmap.dialogs.SelectMapDialog
 import com.kesimilim.newsmap.model.*
 import com.kesimilim.newsmap.repository.FriendRepository
 import com.kesimilim.newsmap.repository.PostRepository
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), FriendsAdapter.OnFriendClickListener {
 
         val newsButton: Button = findViewById(R.id.newsBtn)
         newsButton.setOnClickListener {
-            val dialog = MapDialog(this)
+            val dialog = SelectMapDialog(this)
             dialog.window?.setBackgroundDrawableResource(R.color.transparent)
             dialog.show()
         }

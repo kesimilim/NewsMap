@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mapFriendItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_google_logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginVertical="5dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="Name LastName"/>
+
+        <TextView
+            android:id="@+id/cityTextView"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginVertical="5dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="Name LastName"/>
+
+    </LinearLayout>
+
+</LinearLayout>
