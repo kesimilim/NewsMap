@@ -17,4 +17,8 @@ class FriendRepository(
             friendList
         }
     }
+
+    suspend fun fetchFriend(id: Long): RoomFriend = withContext(Dispatchers.IO) {
+        friendLocalDataSource.getFriend(id)
+    }
 }

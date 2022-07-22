@@ -11,6 +11,9 @@ interface FriendsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addFriend(friend: RoomFriend)
 
+    @Query("SELECT * FROM friends_table WHERE user_id = :id")
+    fun getFriend(id: Long): RoomFriend
+
     @Query("SELECT * FROM friends_table")
     fun getAllFriends(): List<RoomFriend>
 }

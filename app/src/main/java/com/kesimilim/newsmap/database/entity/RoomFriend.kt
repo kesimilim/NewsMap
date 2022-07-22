@@ -8,6 +8,9 @@ data class RoomFriend(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
+    @ColumnInfo(name = "user_id")
+    val userId: Long,
+
     @ColumnInfo(name = "first_name")
     val firstName: String,
 
