@@ -7,6 +7,7 @@ import com.kesimilim.newsmap.screens.maps.google.GoogleActivity
 import com.kesimilim.newsmap.screens.maps.yandex.YandexActivity
 import com.kesimilim.newsmap.screens.main.MainActivity
 import com.kesimilim.newsmap.screens.wall.WallActivity
+import com.kesimilim.newsmap.screens.welcome.WelcomeActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,4 +20,5 @@ interface AppComponent {
     fun inject(yandexActivity: YandexActivity)
     fun inject(googleActivity: GoogleActivity)
     fun inject(wallActivity: WallActivity)
+    fun inject(welcomeActivity: WelcomeActivity)
 }
