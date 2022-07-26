@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
-import com.kesimilim.newsmap.database.NewsMapDatabase
 import com.kesimilim.newsmap.database.entity.RoomFriend
 import com.kesimilim.newsmap.dialogs.SelectMapDialog
 import com.kesimilim.newsmap.model.*
@@ -33,7 +32,6 @@ class MainActivity : AppCompatActivity(), FriendsAdapter.OnFriendClickListener {
 
     @Inject lateinit var friendRepository: FriendRepository
     @Inject lateinit var postRepository: PostRepository
-    @Inject lateinit var database: NewsMapDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +39,6 @@ class MainActivity : AppCompatActivity(), FriendsAdapter.OnFriendClickListener {
 
         val logoutButton: Button = findViewById(R.id.logoutBtn)
         logoutButton.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                database.clearAllTables()
-            }
             VK.logout()
             WelcomeActivity.startFrom(this)
             finish()

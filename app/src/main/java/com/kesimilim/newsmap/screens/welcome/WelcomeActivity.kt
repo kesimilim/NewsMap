@@ -8,15 +8,26 @@ import android.webkit.WebViewClient
 import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
+import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
+import com.kesimilim.newsmap.database.NewsMapDatabase
 import com.kesimilim.newsmap.screens.main.MainActivity
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
 import com.vk.api.sdk.exceptions.VKAuthException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class WelcomeActivity : AppCompatActivity() {
 
+    init {
+        NewsMapApplication.appComponent.inject(this)
+    }
+
+    @Inject lateinit var database: NewsMapDatabase
     private lateinit var authLauncher: ActivityResultLauncher<Collection<VKScope>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +38,10 @@ class WelcomeActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_welcome)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            database.clearAllTables()
+        }
 
         authLauncher = VK.login(this) { result : VKAuthenticationResult ->
             when (result) {
