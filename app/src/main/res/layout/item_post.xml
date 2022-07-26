@@ -32,7 +32,7 @@
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/photoRecyclerView"
+            android:id="@+id/attachmentRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
