@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.entity.RoomFriend
+import com.kesimilim.newsmap.databinding.ActivityGoogleBinding
 import com.kesimilim.newsmap.dialogs.FriendListDialog
 import com.kesimilim.newsmap.repository.FriendRepository
 import com.kesimilim.newsmap.screens.wall.WallActivity
@@ -27,9 +28,12 @@ class GoogleActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     }
     @Inject lateinit var friendRepository: FriendRepository
 
+    private lateinit var binding: ActivityGoogleBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_google)
+        binding = ActivityGoogleBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         GlobalScope.launch(Dispatchers.Main) {
             val list = mapObject(friendRepository.fetchFriendList())

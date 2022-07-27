@@ -7,13 +7,13 @@ import android.os.Bundle
 import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.entity.RoomFriend
+import com.kesimilim.newsmap.databinding.ActivityYandexBinding
 import com.kesimilim.newsmap.dialogs.FriendListDialog
 import com.kesimilim.newsmap.repository.FriendRepository
 import com.kesimilim.newsmap.screens.wall.WallActivity
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
-import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,16 +27,15 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
     }
 
     @Inject lateinit var friendRepository: FriendRepository
-
-    lateinit var mapView: MapView
-    lateinit var mapObjects: MapObjectCollection;
+    private lateinit var mapObjects: MapObjectCollection;
+    private lateinit var binding: ActivityYandexBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityYandexBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_yandex)
 
-        mapView = findViewById(R.id.mapview)
-        mapObjects = mapView.map.mapObjects.addCollection()
+        mapObjects = binding.mapView.map.mapObjects.addCollection()
 
         GlobalScope.launch(Dispatchers.Main) {
             val list = mapObject(friendRepository.fetchFriendList())
@@ -95,13 +94,13 @@ class YandexActivity : AppCompatActivity(), MapObjectTapListener {
     }
 
     override fun onStop() {
-        mapView.onStop()
+        binding.mapView.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
     }
 
     override fun onStart() {
-        mapView.onStart()
+        binding.mapView.onStart()
         MapKitFactory.getInstance().onStart()
         super.onStart()
     }

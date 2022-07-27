@@ -5,12 +5,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebViewClient
-import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.kesimilim.newsmap.NewsMapApplication
 import com.kesimilim.newsmap.R
 import com.kesimilim.newsmap.database.NewsMapDatabase
+import com.kesimilim.newsmap.databinding.ActivityWelcomeBinding
 import com.kesimilim.newsmap.screens.main.MainActivity
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
@@ -29,15 +29,17 @@ class WelcomeActivity : AppCompatActivity() {
 
     @Inject lateinit var database: NewsMapDatabase
     private lateinit var authLauncher: ActivityResultLauncher<Collection<VKScope>>
+    private lateinit var binding: ActivityWelcomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
         if (VK.isLoggedIn()) {
             MainActivity.startFrom(this)
             finish()
             return
         }
-        setContentView(R.layout.activity_welcome)
+        setContentView(binding.root)
 
         GlobalScope.launch(Dispatchers.IO) {
             database.clearAllTables()
@@ -50,8 +52,7 @@ class WelcomeActivity : AppCompatActivity() {
             }
         }
 
-        val loginButton: Button = findViewById(R.id.loginBtn)
-        loginButton.setOnClickListener {
+        binding.loginBtn.setOnClickListener {
             authLauncher.launch(arrayListOf(VKScope.WALL, VKScope.PHOTOS))
         }
     }
